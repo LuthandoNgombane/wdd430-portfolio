@@ -1,4 +1,6 @@
 import ProjectList from '@/components/ProjectList';
+import SkillCard from '@/components/SkillsCard';
+
 const projects = [
   {
     title: 'E-Commerce Dashboard',
@@ -26,6 +28,25 @@ const projects = [
   }
 ];
 
+const technicalSkills = [
+  {
+    category: 'Backend & APIs',
+    description: 'Server architectures, RESTful services, and microservices.',
+    skills: ['Node.js', 'Express.js', 'PHP', 'Python', 'REST APIs'],
+  },
+  {
+    category: 'Frontend & Mobile',
+    description: 'Building responsive user interfaces and client-side applications.',
+    skills: ['React', 'Next.js', 'React Native', 'TypeScript', 'Tailwind CSS'],
+  },
+  {
+    category: 'Databases & DevOps',
+    description: 'Data modeling, persistence, and environment setup.',
+    skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Docker', 'Git'],
+  },
+];
+
+
 export default function Home() { 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -36,6 +57,20 @@ export default function Home() {
         </p>
       </section>
       <ProjectList projects={projects} />
+      <br></br>
+      <section>
+        <h3 className="text-2xl font-semibold text-gray-800 mb-6">Technical Skills</h3>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {technicalSkills.map((skillGroup) => (
+            <SkillCard
+              key={skillGroup.category}
+              category={skillGroup.category}
+              skills={skillGroup.skills}
+              description={skillGroup.description}
+            />
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
