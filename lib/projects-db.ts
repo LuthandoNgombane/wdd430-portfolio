@@ -9,6 +9,44 @@ export interface Project {
   link?: string;
 }
 
+const ITEMS_PER_PAGE = 3; // Set to 2 or 3 so pagination is easy to test with your sample data
+
+export async function fetchFilteredProjects(
+  query: string,
+  currentPage: number
+): Promise<Project[]> {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const searchPattern = `%${query}%`;
+
+  const { rows } = await sql<Project>`
+    SELECT * FROM projects
+    WHERE
+      title ILIKE ${searchPattern} OR
+      description ILIKE ${searchPattern} OR
+      array_to_string(technologies, ' ') ILIKE ${searchPattern}
+    ORDER BY id
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+  `;
+
+  return rows;
+}
+
+export async function fetchProjectsPages(query: string): Promise<number> {
+  const searchPattern = `%${query}%`;
+
+  const { rows } = await sql<{ count: string }>`
+    SELECT COUNT(*) AS count FROM projects
+    WHERE
+      title ILIKE ${searchPattern} OR
+      description ILIKE ${searchPattern} OR
+      array_to_string(technologies, ' ') ILIKE ${searchPattern}
+  `;
+
+  const totalCount = Number(rows[0]?.count ?? 0);
+  return Math.ceil(totalCount / ITEMS_PER_PAGE);
+}
+
+
 export async function getProjects(type?: string | null): Promise<Project[]> {
   if (type) {
     const { rows } = await sql<Project>`
