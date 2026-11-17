@@ -6,7 +6,7 @@ interface SkillCardProps {
 export default function SkillCard({ category, skills }: SkillCardProps) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mt-6">
-      <h3 className="text-xl font-semibold text-blue-600 mb-3">{category}</h3>
+      <h2 className="text-xl font-semibold text-blue-600 mb-3">{category}</h2>
       <div className="flex flex-wrap gap-2">
         {skills.map((skill) => (
           <span 
